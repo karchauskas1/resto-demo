@@ -25,6 +25,9 @@ function App() {
       window.Telegram.WebApp.expand()
     }
 
+    // ВРЕМЕННО: Сброс для демонстрации онбординга
+    localStorage.clear()
+
     // Check if user has completed onboarding
     const onboarded = localStorage.getItem('onboarded')
     if (onboarded === 'true') {

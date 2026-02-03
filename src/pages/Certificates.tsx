@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronLeftIcon } from '../components/Icons'
+import { ChevronLeftIcon, XIcon } from '../components/Icons'
 
 const certificateOptions = [
   { value: 3000, label: '3 000 ₽' },
@@ -16,13 +16,18 @@ export default function Certificates() {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null)
   const [recipientName, setRecipientName] = useState('')
   const [message, setMessage] = useState('')
+  const [showPreview, setShowPreview] = useState(false)
 
   const handlePurchase = () => {
     if (!selectedAmount) {
       alert('Выберите номинал сертификата')
       return
     }
-    alert('Функция покупки сертификата будет доступна в ближайшее время!')
+    setShowPreview(true)
+  }
+
+  const generateCertCode = () => {
+    return 'GIFT-' + Math.random().toString(36).substring(2, 8).toUpperCase()
   }
 
   return (
@@ -106,6 +111,124 @@ export default function Certificates() {
         <button onClick={handlePurchase}>
           {selectedAmount ? `Купить за ${selectedAmount.toLocaleString()} ₽` : 'Выберите номинал'}
         </button>
+      </div>
+
+      {/* Certificate Preview Modal */}
+      <div
+        className={`modal-overlay ${showPreview ? 'open' : ''}`}
+        onClick={() => setShowPreview(false)}
+      >
+        <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 340 }}>
+          <div className="modal-header">
+            <span className="modal-title">Ваш сертификат готов!</span>
+            <button className="modal-close" onClick={() => setShowPreview(false)}>
+              <XIcon />
+            </button>
+          </div>
+          <div className="modal-content" style={{ padding: 0 }}>
+            {/* Certificate Preview */}
+            <div style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+              padding: 24,
+              margin: 16,
+              borderRadius: 16,
+              border: '1px solid var(--primary-color)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: -20,
+                right: -20,
+                width: 80,
+                height: 80,
+                background: 'var(--primary-color)',
+                opacity: 0.1,
+                borderRadius: '50%'
+              }} />
+              <p style={{
+                fontSize: 12,
+                color: 'var(--primary-color)',
+                letterSpacing: 2,
+                marginBottom: 8
+              }}>ПОДАРОЧНЫЙ СЕРТИФИКАТ</p>
+              <p style={{
+                fontSize: 32,
+                fontWeight: 700,
+                marginBottom: 16,
+                color: 'white'
+              }}>{selectedAmount?.toLocaleString()} ₽</p>
+              {recipientName && (
+                <p style={{ fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)' }}>
+                  Для: <span style={{ color: 'white' }}>{recipientName}</span>
+                </p>
+              )}
+              {message && (
+                <p style={{
+                  fontSize: 13,
+                  fontStyle: 'italic',
+                  color: 'var(--text-secondary)',
+                  marginBottom: 16,
+                  lineHeight: 1.4
+                }}>"{message}"</p>
+              )}
+              <div style={{
+                borderTop: '1px dashed var(--border-color)',
+                paddingTop: 12,
+                marginTop: 8
+              }}>
+                <p style={{ fontSize: 11, color: 'var(--text-secondary)' }}>
+                  Код: <span style={{ fontFamily: 'monospace', color: 'var(--primary-color)' }}>
+                    {generateCertCode()}
+                  </span>
+                </p>
+                <p style={{ fontSize: 10, color: 'var(--text-secondary)', marginTop: 4 }}>
+                  Действителен 1 год
+                </p>
+              </div>
+            </div>
+
+            <div style={{ padding: '0 16px 16px' }}>
+              <p style={{
+                fontSize: 13,
+                color: 'var(--text-secondary)',
+                textAlign: 'center',
+                marginBottom: 16,
+                lineHeight: 1.5
+              }}>
+                Сертификат будет отправлен на указанный email или в Telegram
+              </p>
+              <button
+                onClick={() => {
+                  setShowPreview(false)
+                  alert('Демо: Здесь откроется форма оплаты')
+                }}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  background: 'var(--primary-color)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 12,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  marginBottom: 8
+                }}
+              >
+                Оплатить {selectedAmount?.toLocaleString()} ₽
+              </button>
+              <p style={{
+                fontSize: 11,
+                color: 'var(--text-secondary)',
+                textAlign: 'center',
+                opacity: 0.7
+              }}>
+                Демо: интеграция с платежной системой
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -87,7 +87,7 @@ export default function PersonalData() {
           onClick={handleSave}
           style={{ marginTop: 24 }}
         >
-          {saved ? '✓ Сохранено' : 'Сохранить'}
+          {saved ? 'Сохранено' : 'Сохранить'}
         </button>
       </div>
     </div>

@@ -3,8 +3,8 @@ import { Restaurant, Event } from '../types'
 export const restaurants: Restaurant[] = [
   {
     id: 'smoke-bbq',
-    name: 'SMOKE BBQ',
-    address: 'Москва, ул. Трубная, 18',
+    name: 'GRILL HOUSE',
+    address: 'Москва, ул. Примерная, 18',
     city: 'Москва',
     averageCheck: 3000,
     workingHours: {
@@ -13,8 +13,8 @@ export const restaurants: Restaurant[] = [
     },
     heroImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
     logo: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=200&q=80',
-    description: 'SMOKE BBQ — это место, где мясо готовится по всем правилам американского барбекю. Мы используем только премиальные отрубы и коптим их на дровах в наших смокерах.',
-    aboutChef: 'Шеф-повар Алексей Иванов — мастер барбекю с 15-летним опытом. Обучался в Техасе у легендарных питмастеров и привнёс лучшие традиции американского BBQ в Россию.',
+    description: 'GRILL HOUSE — это место, где мясо готовится по всем правилам. Мы используем только премиальные отрубы и коптим их на дровах.',
+    aboutChef: 'Шеф-повар с 15-летним опытом работы в лучших ресторанах.',
     coordinates: {
       lat: 55.7673,
       lng: 37.6257
@@ -46,7 +46,7 @@ export const restaurants: Restaurant[] = [
           { id: '4', name: 'Брискет', description: 'Говяжья грудинка 14-часового копчения', price: 1800, weight: '300г', inStop: false },
           { id: '5', name: 'Пулд порк', description: 'Томленая свиная лопатка', price: 1200, weight: '350г', inStop: false },
           { id: '6', name: 'Стейк Рибай', description: 'Мраморная говядина, прожарка на выбор', price: 2800, weight: '400г', inStop: true },
-          { id: '7', name: 'Бургер SMOKE', description: 'Котлета из брискета, бекон, чеддер, соус BBQ', price: 890, weight: '380г', inStop: false },
+          { id: '7', name: 'Фирменный бургер', description: 'Котлета из брискета, бекон, чеддер, фирменный соус', price: 890, weight: '380г', inStop: false },
         ]
       },
       {
@@ -71,8 +71,8 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: 'omakase-house',
-    name: 'OMAKASE HOUSE',
-    address: 'Москва, Патриаршие пруды, 5',
+    name: 'SAKURA',
+    address: 'Москва, ул. Демонстрационная, 5',
     city: 'Москва',
     averageCheck: 8000,
     workingHours: {
@@ -81,8 +81,8 @@ export const restaurants: Restaurant[] = [
     },
     heroImage: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=800&q=80',
     logo: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=200&q=80',
-    description: 'OMAKASE HOUSE — эксклюзивный японский ресторан с авторской кухней. Каждый вечер шеф-повар готовит уникальное меню из свежайших продуктов, доставляемых из Японии.',
-    aboutChef: 'Шеф-повар Такеши Ямамото — обладатель звезды Мишлен, 20 лет опыта в лучших ресторанах Токио и Нью-Йорка.',
+    description: 'SAKURA — эксклюзивный японский ресторан с авторской кухней. Каждый вечер шеф-повар готовит уникальное меню из свежайших продуктов.',
+    aboutChef: 'Шеф-повар с 20-летним опытом работы в лучших ресторанах.',
     coordinates: {
       lat: 55.7614,
       lng: 37.5918
@@ -107,21 +107,21 @@ export const restaurants: Restaurant[] = [
 export const events: Event[] = [
   {
     id: 'bbq-brunch',
-    title: 'BBQ-бранч',
+    title: 'Воскресный бранч',
     image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80',
     date: '2025-02-15',
     restaurantId: 'smoke-bbq',
     price: 3500,
-    description: 'Воскресный бранч с безлимитным BBQ и напитками. Живая музыка и отличная атмосфера!'
+    description: 'Воскресный бранч с безлимитным меню и напитками. Живая музыка и отличная атмосфера!'
   },
   {
     id: 'omakase-dinner',
-    title: 'Omakase ужин',
+    title: 'Гастроужин',
     image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=80',
     date: '2025-02-20',
     restaurantId: 'omakase-house',
     price: 12000,
-    description: 'Эксклюзивный ужин на 12 персон с участием шефа. Дегустация премиальных саке.'
+    description: 'Эксклюзивный ужин на 12 персон с участием шефа. Дегустация и авторские блюда.'
   }
 ]
 

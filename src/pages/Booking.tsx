@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ChevronLeftIcon, MinusIcon, PlusIcon } from '../components/Icons'
+import { ChevronLeftIcon, MinusIcon, PlusIcon, CheckIcon, BellIcon } from '../components/Icons'
 import { restaurants } from '../data/restaurants'
 
 export default function Booking() {
@@ -17,6 +17,27 @@ export default function Booking() {
   const [comment, setComment] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isConfirmed, setIsConfirmed] = useState(false)
+
+  // Auto-confirm booking after 10 seconds
+  useEffect(() => {
+    if (isSuccess && !isConfirmed) {
+      const timer = setTimeout(() => {
+        setIsConfirmed(true)
+        // Haptic feedback for confirmation
+        if (window.Telegram?.WebApp) {
+          window.Telegram.WebApp.hapticFeedback.notificationOccurred('success')
+        }
+        // Update booking status in localStorage
+        const bookings = JSON.parse(localStorage.getItem('bookings') || '[]')
+        if (bookings.length > 0) {
+          bookings[bookings.length - 1].status = 'confirmed'
+          localStorage.setItem('bookings', JSON.stringify(bookings))
+        }
+      }, 10000)
+      return () => clearTimeout(timer)
+    }
+  }, [isSuccess, isConfirmed])
 
   if (!restaurant) {
     return (
@@ -85,11 +106,53 @@ export default function Booking() {
           </button>
           <span className="profile-title">Бронирование</span>
         </div>
+
+        {/* Confirmation notification */}
+        {isConfirmed && (
+          <div style={{
+            position: 'fixed',
+            top: 80,
+            left: 16,
+            right: 16,
+            background: 'var(--surface)',
+            borderRadius: 16,
+            padding: 16,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+            zIndex: 100,
+            animation: 'slideDown 0.3s ease'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: 'var(--success)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white'
+              }}>
+                <CheckIcon />
+              </div>
+              <div>
+                <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>Бронирование подтверждено</p>
+                <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Ждём вас в {restaurant?.name}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="empty-state">
-          <div className="empty-state-icon">✅</div>
-          <h2 style={{ marginBottom: 8 }}>Заявка отправлена!</h2>
+          <div className="empty-state-icon" style={{ display: 'flex', justifyContent: 'center', color: 'var(--primary)' }}>
+            {isConfirmed ? <CheckIcon /> : <BellIcon />}
+          </div>
+          <h2 style={{ marginBottom: 8 }}>
+            {isConfirmed ? 'Бронирование подтверждено!' : 'Заявка отправлена!'}
+          </h2>
           <p className="empty-state-text">
-            Мы свяжемся с вами для подтверждения бронирования
+            {isConfirmed
+              ? 'Ваше бронирование подтверждено. Ждём вас!'
+              : 'Мы свяжемся с вами для подтверждения бронирования'}
           </p>
           <button
             className="onboarding-button"
@@ -172,6 +235,28 @@ export default function Booking() {
               <PlusIcon />
             </button>
           </div>
+        </div>
+
+        {/* Interactive map note */}
+        <div style={{
+          background: 'var(--bg)',
+          borderRadius: 12,
+          padding: 14,
+          marginBottom: 14
+        }}>
+          <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+            Для каждого заведения индивидуально прорабатывается интерактивная карта зала.
+            Гость сможет выбрать конкретный столик на выбранное время — и это место
+            гарантированно будет его ждать.
+          </p>
+          <p style={{
+            fontSize: 11,
+            color: 'var(--text-muted)',
+            marginTop: 8,
+            fontStyle: 'italic'
+          }}>
+            Демо: здесь появится схема зала с выбором столика
+          </p>
         </div>
 
         <div className="form-group">

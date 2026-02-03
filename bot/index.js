@@ -1,11 +1,24 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 const TOKEN = '8102946239:AAFNNkcUuRA5VAsqJDUBq_w3s-vLCtBZvGo';
-const WEB_APP_URL = 'https://resto-demo.vercel.app';
+const WEB_APP_URL = 'https://resto-demo-rho.vercel.app';
 
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-console.log('🤖 RESTO Demo bot started!');
+console.log('RESTO Demo bot started!');
+
+// Set menu button for all chats
+bot.setChatMenuButton({
+  menu_button: {
+    type: 'web_app',
+    text: 'Открыть',
+    web_app: { url: WEB_APP_URL }
+  }
+}).then(() => {
+  console.log('Menu button updated successfully');
+}).catch((err) => {
+  console.error('Failed to update menu button:', err.message);
+});
 
 // /start command
 bot.onText(/\/start/, (msg) => {
